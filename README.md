@@ -1,1 +1,3 @@
-# cics-256-final-project
+# CICS 256 Final Project
+
+## Robot Spider
