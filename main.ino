@@ -56,9 +56,9 @@ void setup() {
     // initialize servos
     legs = new Legs {
         .frontLeft = {
-            .hip = Joint(34, MIN_ANGLE_LEFT_HIP, MAX_ANGLE_LEFT_HIP),
+            .hip = Joint(32, MIN_ANGLE_LEFT_HIP, MAX_ANGLE_LEFT_HIP),
             .knee = Joint(35, MIN_ANGLE_LEFT_KNEE, MAX_ANGLE_LEFT_KNEE),
-            .ankle = Joint(32, MIN_ANGLE_LEFT_ANKLE, MAX_ANGLE_LEFT_ANKLE),
+            .ankle = Joint(34, MIN_ANGLE_LEFT_ANKLE, MAX_ANGLE_LEFT_ANKLE),
         },
         .frontRight = {
             .hip = Joint(23, MIN_ANGLE_RIGHT_HIP, MAX_ANGLE_RIGHT_HIP),
@@ -66,14 +66,14 @@ void setup() {
             .ankle = Joint(21, MIN_ANGLE_RIGHT_ANKLE, MAX_ANGLE_RIGHT_ANKLE),
         },
         .rearleft = {
-            .hip = Joint(26, MIN_ANGLE_LEFT_HIP, MAX_ANGLE_LEFT_HIP),
+            .hip = Joint(33, MIN_ANGLE_LEFT_HIP, MAX_ANGLE_LEFT_HIP),
             .knee = Joint(25, MIN_ANGLE_LEFT_KNEE, MAX_ANGLE_LEFT_KNEE),
-            .ankle = Joint(33, MIN_ANGLE_LEFT_ANKLE, MAX_ANGLE_LEFT_ANKLE),
+            .ankle = Joint(26, MIN_ANGLE_LEFT_ANKLE, MAX_ANGLE_LEFT_ANKLE),
         },
         .rearRight = {
-            .hip = Joint(5, MIN_ANGLE_RIGHT_HIP, MAX_ANGLE_RIGHT_HIP),
+            .hip = Joint(19, MIN_ANGLE_RIGHT_HIP, MAX_ANGLE_RIGHT_HIP),
             .knee = Joint(18, MIN_ANGLE_RIGHT_KNEE, MAX_ANGLE_RIGHT_KNEE),
-            .ankle = Joint(19, MIN_ANGLE_RIGHT_ANKLE, MAX_ANGLE_RIGHT_ANKLE),
+            .ankle = Joint(5, MIN_ANGLE_RIGHT_ANKLE, MAX_ANGLE_RIGHT_ANKLE),
         },
     };
 }
