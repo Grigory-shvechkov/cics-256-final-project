@@ -109,7 +109,7 @@ public:
 
     void stand_up()
     {   
-
+        //TODO: finish this
         left_front.move(HIP_MAX,KNEE_MIN,ANKLE_MAX);
     }
 
