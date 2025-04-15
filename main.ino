@@ -130,7 +130,6 @@ Servo test_servo;
 
 void setup()
 {
-    /*
     //setup serial communication
     Serial.begin(115200);
     Serial.println("TIME TO CRAWL");
@@ -142,15 +141,11 @@ void setup()
     right_rear = new Leg(5, 18, 19);
     //create new spider object
     spider = new Spider(*left_front, *left_rear, *right_front, *right_rear); // give spider the leg objects
-    */
-    test_servo.attach(35);
+
 }
 
 void loop()
 {   
-    test_servo.write(90);
-    delay(1000);
-    test_servo.write(0);
-    delay(1000);
+
     //loop code goes here
 }
