@@ -5,6 +5,9 @@
 #include "limits.h"
 #include "legs.h"
 
+Spider *spider;
+Leg *front_left, *front_right, *rear_left, *rear_right;
+
 WebServer server(80);
 void on_home() {
     server.send(200, "application/json", "{\"status\":\"ok\"}");
@@ -46,9 +49,6 @@ void on_rotate() {
         }
     }
 }
-
-Spider *spider;
-Leg *front_left, *front_right, *rear_left, *rear_right;
 
 void setup() {
     Serial.begin(115200);
