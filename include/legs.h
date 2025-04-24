@@ -6,28 +6,33 @@ class Joint {
     int min_angle;
     int max_angle;
     int offset;
-
-    int convertAngle(int angle);
+    int current_angle;
 
     public:
         Joint(int pin, int min_angle, int max_angle, int offset);
-        Joint rotate(int angle);
+        // input to this function should be in global coordinate system
+        int rotate(int angle);
+        void move();
 };
 
 class Leg {
+    Joint *hip;
+    Joint *knee;
+    Joint *ankle;
+
     public:
-        Joint *hip;
-        Joint *knee;
-        Joint *ankle;
         Leg(Joint *hip, Joint *knee, Joint *ankle);
+        Leg* rotateHip(int angle);
+        Leg* rotateKnee(int angle);
+        Leg* rotateAnkle(int angle);
+        void move();
 };
 
 class Spider {
-    Leg *front_left;
-    Leg *front_right;
-    Leg *rear_left;
-    Leg *rear_right;
-
     public:
+        Leg *front_left;
+        Leg *front_right;
+        Leg *rear_left;
+        Leg *rear_right;
         Spider(Leg *fl, Leg *fr, Leg *rl, Leg *rr);
 };

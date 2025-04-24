@@ -16,36 +16,40 @@ void on_rotate() {
     if (server.hasArg("leg") && server.hasArg("joint") && server.hasArg("angle")) {
         if (server.arg("leg") == "fl") {
             if (server.arg("joint") == "hip") {
-                front_left->hip->rotate(server.arg("angle").toInt());
+                front_left->rotateHip(server.arg("angle").toInt());
             } else if (server.arg("joint") == "knee") {
-                front_left->knee->rotate(server.arg("angle").toInt());
+                front_left->rotateKnee(server.arg("angle").toInt());
             } else if (server.arg("joint") == "ankle") {
-                front_left->ankle->rotate(server.arg("angle").toInt());
+                front_left->rotateAnkle(server.arg("angle").toInt());
             }
+            front_left->move();
         } else if (server.arg("leg") == "fr") {
             if (server.arg("joint") == "hip") {
-                front_right->hip->rotate(server.arg("angle").toInt());
+                front_right->rotateHip(server.arg("angle").toInt());
             } else if (server.arg("joint") == "knee") {
-                front_right->knee->rotate(server.arg("angle").toInt());
+                front_right->rotateKnee(server.arg("angle").toInt());
             } else if (server.arg("joint") == "ankle") {
-                front_right->ankle->rotate(server.arg("angle").toInt());
+                front_right->rotateAnkle(server.arg("angle").toInt());
             }
+            front_right->move();
         } else if (server.arg("leg") == "rl") {
             if (server.arg("joint") == "hip") {
-                rear_left->hip->rotate(server.arg("angle").toInt());
+                rear_left->rotateHip(server.arg("angle").toInt());
             } else if (server.arg("joint") == "knee") {
-                rear_left->knee->rotate(server.arg("angle").toInt());
+                rear_left->rotateKnee(server.arg("angle").toInt());
             } else if (server.arg("joint") == "ankle") {
-                rear_left->ankle->rotate(server.arg("angle").toInt());
+                rear_left->rotateAnkle(server.arg("angle").toInt());
             }
+            rear_left->move();
         } else if (server.arg("leg") == "rr") {
             if (server.arg("joint") == "hip") {
-                rear_right->hip->rotate(server.arg("angle").toInt());
+                rear_right->rotateHip(server.arg("angle").toInt());
             } else if (server.arg("joint") == "knee") {
-                rear_right->knee->rotate(server.arg("angle").toInt());
+                rear_right->rotateKnee(server.arg("angle").toInt());
             } else if (server.arg("joint") == "ankle") {
-                rear_right->ankle->rotate(server.arg("angle").toInt());
+                rear_right->rotateAnkle(server.arg("angle").toInt());
             }
+            rear_right->move();
         }
     }
 }
@@ -81,10 +85,18 @@ void setup() {
     );
 
     spider = new Spider(front_left, front_right, rear_left, rear_right);
-
-
 }
 
 void loop() {
-    String command = "";
+    spider->front_left->rotateHip(90)->move();
+    delay(500);
+
+    spider->front_right->rotateHip(270)->move();
+    delay(500);
+
+    spider->rear_right->rotateHip(270)->move();
+    delay(500);
+
+    spider->rear_left->rotateHip(90)->move();
+    delay(500);
 }

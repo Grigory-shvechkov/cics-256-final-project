@@ -3,12 +3,14 @@
     import ChevronUp from "@lucide/svelte/icons/chevron-up";
 
     async function handleForwardClick() {
+        console.log("here");
         const response = await fetch("http://192.168.4.1/rotate?leg=fl&joint=hip&angle=45", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
             },
         });
+        console.log(response);
         if (response.ok) {
             const result = await response.json();
             console.log("Success: ", result);
