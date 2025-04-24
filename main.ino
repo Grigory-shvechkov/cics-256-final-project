@@ -14,7 +14,7 @@ void on_home() {
 }
 void on_rotate() {
     if (server.hasArg("leg") && server.hasArg("joint") && server.hasArg("angle")) {
-        if (server.arg("leg") == "front_left") {
+        if (server.arg("leg") == "fl") {
             if (server.arg("joint") == "hip") {
                 front_left->hip->rotate(server.arg("angle").toInt());
             } else if (server.arg("joint") == "knee") {
@@ -22,7 +22,7 @@ void on_rotate() {
             } else if (server.arg("joint") == "ankle") {
                 front_left->ankle->rotate(server.arg("angle").toInt());
             }
-        } else if (server.arg("leg") == "front_right") {
+        } else if (server.arg("leg") == "fr") {
             if (server.arg("joint") == "hip") {
                 front_right->hip->rotate(server.arg("angle").toInt());
             } else if (server.arg("joint") == "knee") {
@@ -30,7 +30,7 @@ void on_rotate() {
             } else if (server.arg("joint") == "ankle") {
                 front_right->ankle->rotate(server.arg("angle").toInt());
             }
-        } else if (server.arg("leg") == "rear_left") {
+        } else if (server.arg("leg") == "rl") {
             if (server.arg("joint") == "hip") {
                 rear_left->hip->rotate(server.arg("angle").toInt());
             } else if (server.arg("joint") == "knee") {
@@ -38,7 +38,7 @@ void on_rotate() {
             } else if (server.arg("joint") == "ankle") {
                 rear_left->ankle->rotate(server.arg("angle").toInt());
             }
-        } else if (server.arg("leg") == "rear_right") {
+        } else if (server.arg("leg") == "rr") {
             if (server.arg("joint") == "hip") {
                 rear_right->hip->rotate(server.arg("angle").toInt());
             } else if (server.arg("joint") == "knee") {
