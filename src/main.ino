@@ -64,39 +64,48 @@ void setup() {
     server.begin();
 
     front_left = new Leg(
-        new Joint(23, FL_HIP_MIN, FL_HIP_MAX, 0), // hip
-        new Joint(22, FL_KNEE_MIN, FL_KNEE_MAX, 0), // knee
-        new Joint(21, FL_ANKLE_MIN, FL_ANKLE_MAX, 0) // ankle
+        new Joint(23, FL_HIP_MIN, FL_HIP_MAX, 0, false), // hip
+        new Joint(22, FL_KNEE_MIN, FL_KNEE_MAX, 180, true), // knee
+        new Joint(21, FL_ANKLE_MIN, FL_ANKLE_MAX, 0, false) // ankle
     );
     front_right = new Leg(
-        new Joint(12, FR_HIP_MIN, FR_HIP_MAX, -180), // hip
-        new Joint(14, FR_KNEE_MIN, FR_KNEE_MAX, 0), // knee
-        new Joint(27, FR_ANKLE_MIN, FR_ANKLE_MAX, 0) // ankle
+        new Joint(12, FR_HIP_MIN, FR_HIP_MAX, -180, false), // hip
+        new Joint(14, FR_KNEE_MIN, FR_KNEE_MAX, 360, true), // knee
+        new Joint(27, FR_ANKLE_MIN, FR_ANKLE_MAX, 0, false) // ankle
     );
     rear_left = new Leg(
-        new Joint(19, RL_HIP_MIN, RL_HIP_MAX, 0), // hip
-        new Joint(18, RL_KNEE_MIN, RL_KNEE_MAX, 0), // knee
-        new Joint(5, RL_ANKLE_MIN, RL_ANKLE_MAX, 0) // ankle
+        new Joint(19, RL_HIP_MIN, RL_HIP_MAX, 0, false), // hip
+        new Joint(18, RL_KNEE_MIN, RL_KNEE_MAX, 0, false), // knee
+        new Joint(5, RL_ANKLE_MIN, RL_ANKLE_MAX, 0, false) // ankle
     );
     rear_right = new Leg(
-        new Joint(33, RR_HIP_MIN, RR_HIP_MAX, -180), // hip
-        new Joint(25, RR_KNEE_MIN, RR_KNEE_MAX, 0), // knee
-        new Joint(26, RR_ANKLE_MIN, RR_ANKLE_MAX, 0) // ankle
+        new Joint(33, RR_HIP_MIN, RR_HIP_MAX, -180, false), // hip
+        new Joint(25, RR_KNEE_MIN, RR_KNEE_MAX, -180, false), // knee
+        new Joint(26, RR_ANKLE_MIN, RR_ANKLE_MAX, 0, false) // ankle
     );
 
     spider = new Spider(front_left, front_right, rear_left, rear_right);
 }
 
 void loop() {
-    spider->front_left->rotateHip(90)->move();
-    delay(500);
+    // spider->front_left->rotateHip(90)->move();
+    // delay(500);
 
-    spider->front_right->rotateHip(270)->move();
-    delay(500);
+    // spider->front_right->rotateHip(270)->move();
+    // delay(500);
 
-    spider->rear_right->rotateHip(270)->move();
-    delay(500);
+    // spider->rear_right->rotateHip(270)->move();
+    // delay(500);
 
-    spider->rear_left->rotateHip(90)->move();
+    // spider->rear_left->rotateHip(90)->move();
+    // delay(500);
+
+    spider->front_left->rotateKnee(130)->move();
+    delay(500);
+    spider->front_right->rotateKnee(230)->move();
+    delay(500);
+    spider->rear_right->rotateKnee(230)->move();
+    delay(500);
+    spider->rear_left->rotateKnee(130)->move();
     delay(500);
 }

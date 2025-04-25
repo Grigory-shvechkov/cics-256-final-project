@@ -1,17 +1,22 @@
 #include "legs.h"
 
 
-Joint::Joint(int pin, int min_angle, int max_angle, int offset) {
+Joint::Joint(int pin, int min_angle, int max_angle, int offset, bool invert) {
     this->servo.attach(pin);
     delay(100);
     this->min_angle = min_angle;
     this->max_angle = max_angle;
     this->offset = offset;
+    this->invert = invert;
     this->current_angle = 90;
 }
 
 int Joint::rotate(int angle) {
-    int convertedAngle = angle + offset;
+    int convertedAngle = angle;
+    if (this->invert) {
+        convertedAngle = -convertedAngle;
+    }
+    convertedAngle += offset;
     if (convertedAngle < min_angle) {
         convertedAngle = min_angle;
         Serial.printf("Warning: angle %d given, min is %d\n", convertedAngle, min_angle);

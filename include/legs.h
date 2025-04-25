@@ -6,10 +6,11 @@ class Joint {
     int min_angle;
     int max_angle;
     int offset;
+    bool invert;
     int current_angle;
 
     public:
-        Joint(int pin, int min_angle, int max_angle, int offset);
+        Joint(int pin, int min_angle, int max_angle, int offset, bool invert);
         // input to this function should be in global coordinate system
         int rotate(int angle);
         void move();
