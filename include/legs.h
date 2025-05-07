@@ -37,3 +37,23 @@ class Spider {
         Leg *rear_right;
         Spider(Leg *fl, Leg *fr, Leg *rl, Leg *rr);
 };
+
+
+enum LegType {
+    FRONT_LEFT,
+    FRONT_RIGHT,
+    REAR_LEFT,
+    REAR_RIGHT
+};
+
+enum JointType {
+    HIP,
+    KNEE,
+    ANKLE
+};
+
+struct Move {
+    LegType leg_type;
+    JointType joint_type;
+    int angle;
+};
