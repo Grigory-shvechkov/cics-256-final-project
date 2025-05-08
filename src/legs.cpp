@@ -28,6 +28,10 @@ int Joint::rotate(int angle) {
     return convertedAngle;
 }
 
+int Joint::get_angle() {
+    return this->current_angle;
+}
+
 void Joint::move() {
     this->servo.write(this->current_angle);
 }
@@ -37,19 +41,6 @@ Leg::Leg(Joint *hip, Joint *knee, Joint *ankle) {
     this->hip = hip;
     this->knee = knee;
     this->ankle = ankle;
-}
-
-Leg* Leg::rotateHip(int angle) {
-    this->hip->rotate(angle);
-    return this;
-}
-Leg* Leg::rotateKnee(int angle) {
-    this->knee->rotate(angle);
-    return this;
-}
-Leg* Leg::rotateAnkle(int angle) {
-    this->ankle->rotate(angle);
-    return this;
 }
 
 void Leg::move() {

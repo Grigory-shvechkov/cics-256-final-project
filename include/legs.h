@@ -13,19 +13,16 @@ class Joint {
         Joint(int pin, int min_angle, int max_angle, int offset, bool invert);
         // input to this function should be in global coordinate system
         int rotate(int angle);
+        int get_angle();
         void move();
 };
 
 class Leg {
-    Joint *hip;
-    Joint *knee;
-    Joint *ankle;
-
     public:
+        Joint *hip;
+        Joint *knee;
+        Joint *ankle;
         Leg(Joint *hip, Joint *knee, Joint *ankle);
-        Leg* rotateHip(int angle);
-        Leg* rotateKnee(int angle);
-        Leg* rotateAnkle(int angle);
         void move();
 };
 
@@ -38,22 +35,7 @@ class Spider {
         Spider(Leg *fl, Leg *fr, Leg *rl, Leg *rr);
 };
 
-
-enum LegType {
-    FRONT_LEFT,
-    FRONT_RIGHT,
-    REAR_LEFT,
-    REAR_RIGHT
-};
-
-enum JointType {
-    HIP,
-    KNEE,
-    ANKLE
-};
-
 struct Move {
-    LegType leg_type;
-    JointType joint_type;
+    Joint* joint;
     int angle;
 };

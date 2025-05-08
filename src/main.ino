@@ -4,139 +4,61 @@
 #include <WebServer.h>
 #include "limits.h"
 #include "legs.h"
+#include <vector>
+
+#define uS_PER_DEG 1389
 
 Spider *spider;
 Leg *front_left, *front_right, *rear_left, *rear_right;
 
-Move walk_forward[][] = {
-    // Lift FL
-    {
-        {FRONT_LEFT, KNEE, 180},
-        {FRONT_LEFT, ANKLE, 90},
-    },
-    // Turn FL
-    {
-        {FRONT_LEFT, HIP, 45},
-    },
-    // Plant FL
-    {
-        {FRONT_LEFT, KNEE, 90},
-        {FRONT_LEFT, ANKLE, 165},
-    },
-
-    // Lift FR
-    {
-        {FRONT_RIGHT, KNEE, 180},
-        {FRONT_RIGHT, ANKLE, 90},
-    },
-    // Turn FR
-    {
-        {FRONT_RIGHT, HIP, 315},
-    },
-    // Plant FR
-    {
-        {FRONT_RIGHT, KNEE, 270},
-        {FRONT_RIGHT, ANKLE, 175},
-    },
-
-    // Thrust ALL
-    {
-        {FRONT_LEFT, HIP, 90},
-        {FRONT_LEFT, KNEE, 75},
-        {FRONT_LEFT, ANKLE, 180},
-    },
-    {
-        {FRONT_RIGHT, HIP, 270},
-        {FRONT_RIGHT, KNEE, 285},
-        {FRONT_RIGHT, ANKLE, 180},
-    },
-    {
-        {REAR_LEFT, HIP, 135},
-        {REAR_LEFT, KNEE, 90},
-        {REAR_LEFT, ANKLE, 165},
-    },
-    {
-        {REAR_RIGHT, HIP, 225},
-        {REAR_RIGHT, KNEE, 270},
-        {REAR_RIGHT, ANKLE, 195},
-    },
-
-    // Lift RL
-    {
-        {REAR_LEFT, KNEE, 0},
-        {REAR_LEFT, ANKLE, 90},
-    },
-    // Turn RL
-    {
-        {REAR_LEFT, HIP, 90},
-    },
-    // Plant RL
-    {
-        {REAR_LEFT, KNEE, 90},
-        {REAR_LEFT, ANKLE, 165},
-    },
-
-    // Lift RR
-    {
-        {REAR_RIGHT, KNEE, 0},
-        {REAR_RIGHT, ANKLE, 270},
-    },
-    // Turn RR
-    {
-        {REAR_RIGHT, HIP, 270},
-    },
-    // Plant RR
-    {
-        {REAR_RIGHT, KNEE, 270},
-        {REAR_RIGHT, ANKLE, 195},
-    },
-};
+std::vector<std::vector<Move>> homunculus_walk;
+std::vector<std::vector<Move>> walk_forward;
 
 WebServer server(80);
 void on_home() {
     server.send(200, "application/json", "{\"status\":\"ok\"}");
-}
+};
 void on_rotate() {
-    if (server.hasArg("leg") && server.hasArg("joint") && server.hasArg("angle")) {
-        if (server.arg("leg") == "fl") {
-            if (server.arg("joint") == "hip") {
-                front_left->rotateHip(server.arg("angle").toInt());
-            } else if (server.arg("joint") == "knee") {
-                front_left->rotateKnee(server.arg("angle").toInt());
-            } else if (server.arg("joint") == "ankle") {
-                front_left->rotateAnkle(server.arg("angle").toInt());
-            }
-            front_left->move();
-        } else if (server.arg("leg") == "fr") {
-            if (server.arg("joint") == "hip") {
-                front_right->rotateHip(server.arg("angle").toInt());
-            } else if (server.arg("joint") == "knee") {
-                front_right->rotateKnee(server.arg("angle").toInt());
-            } else if (server.arg("joint") == "ankle") {
-                front_right->rotateAnkle(server.arg("angle").toInt());
-            }
-            front_right->move();
-        } else if (server.arg("leg") == "rl") {
-            if (server.arg("joint") == "hip") {
-                rear_left->rotateHip(server.arg("angle").toInt());
-            } else if (server.arg("joint") == "knee") {
-                rear_left->rotateKnee(server.arg("angle").toInt());
-            } else if (server.arg("joint") == "ankle") {
-                rear_left->rotateAnkle(server.arg("angle").toInt());
-            }
-            rear_left->move();
-        } else if (server.arg("leg") == "rr") {
-            if (server.arg("joint") == "hip") {
-                rear_right->rotateHip(server.arg("angle").toInt());
-            } else if (server.arg("joint") == "knee") {
-                rear_right->rotateKnee(server.arg("angle").toInt());
-            } else if (server.arg("joint") == "ankle") {
-                rear_right->rotateAnkle(server.arg("angle").toInt());
-            }
-            rear_right->move();
-        }
-    }
-}
+    // if (server.hasArg("leg") && server.hasArg("joint") && server.hasArg("angle")) {
+    //     if (server.arg("leg") == "fl") {
+    //         if (server.arg("joint") == "hip") {
+    //             front_left->rotateHip(server.arg("angle").toInt());
+    //         } else if (server.arg("joint") == "knee") {
+    //             front_left->rotateKnee(server.arg("angle").toInt());
+    //         } else if (server.arg("joint") == "ankle") {
+    //             front_left->rotateAnkle(server.arg("angle").toInt());
+    //         }
+    //         front_left->move();
+    //     } else if (server.arg("leg") == "fr") {
+    //         if (server.arg("joint") == "hip") {
+    //             front_right->rotateHip(server.arg("angle").toInt());
+    //         } else if (server.arg("joint") == "knee") {
+    //             front_right->rotateKnee(server.arg("angle").toInt());
+    //         } else if (server.arg("joint") == "ankle") {
+    //             front_right->rotateAnkle(server.arg("angle").toInt());
+    //         }
+    //         front_right->move();
+    //     } else if (server.arg("leg") == "rl") {
+    //         if (server.arg("joint") == "hip") {
+    //             rear_left->rotateHip(server.arg("angle").toInt());
+    //         } else if (server.arg("joint") == "knee") {
+    //             rear_left->rotateKnee(server.arg("angle").toInt());
+    //         } else if (server.arg("joint") == "ankle") {
+    //             rear_left->rotateAnkle(server.arg("angle").toInt());
+    //         }
+    //         rear_left->move();
+    //     } else if (server.arg("leg") == "rr") {
+    //         if (server.arg("joint") == "hip") {
+    //             rear_right->rotateHip(server.arg("angle").toInt());
+    //         } else if (server.arg("joint") == "knee") {
+    //             rear_right->rotateKnee(server.arg("angle").toInt());
+    //         } else if (server.arg("joint") == "ankle") {
+    //             rear_right->rotateAnkle(server.arg("angle").toInt());
+    //         }
+    //         rear_right->move();
+    //     }
+    // }
+};
 
 void setup() {
     Serial.begin(115200);
@@ -169,79 +91,188 @@ void setup() {
     );
 
     spider = new Spider(front_left, front_right, rear_left, rear_right);
-}
+
+    homunculus_walk = {
+        // Lift FL
+        {
+            {front_left->knee, 180},
+            {front_left->ankle, 90},
+        },
+        // Turn FL
+        {
+            {front_left->hip, 45},
+        },
+        // Plant FL
+        {
+            {front_left->knee, 90},
+            {front_left->ankle, 165},
+        },
+
+        // Lift FR
+        {
+            {front_right->knee, 180},
+            {front_right->ankle, 90},
+        },
+        // Turn FR
+        {
+            {front_right->hip, 315},
+        },
+        // Plant FR
+        {
+            {front_right->knee, 270},
+            {front_right->ankle, 175},
+        },
+
+        // Thrust ALL
+        {
+            {front_left->hip, 90},
+            {front_left->knee, 75},
+            {front_left->ankle, 180},
+        },
+        {
+            {front_right->hip, 270},
+            {front_right->knee, 285},
+            {front_right->ankle, 180},
+        },
+        {
+            {rear_left->hip, 135},
+            {rear_left->knee, 90},
+            {rear_left->ankle, 165},
+        },
+        {
+            {rear_right->hip, 225},
+            {rear_right->knee, 270},
+            {rear_right->ankle, 195},
+        },
+
+        // Lift RL
+        {
+            {rear_left->knee, 0},
+            {rear_left->ankle, 90},
+        },
+        // Turn RL
+        {
+            {rear_left->hip, 90},
+        },
+        // Plant RL
+        {
+            {rear_left->knee, 90},
+            {rear_left->ankle, 165},
+        },
+
+        // Lift RR
+        {
+            {rear_right->knee, 0},
+            {rear_right->ankle, 270},
+        },
+        // Turn RR
+        {
+            {rear_right->hip, 270},
+        },
+        // Plant RR
+        {
+            {rear_right->knee, 270},
+            {rear_right->ankle, 195},
+        },
+    };
+
+    walk_forward = {
+        // Lift FL
+        {
+            {front_left->knee, 0},
+            {front_left->ankle, 90},
+        },
+        // Turn FL
+        {
+            {front_left->hip, 45},
+        },
+        // Plant FL
+        {
+            {front_left->knee, 100},
+            {front_left->ankle, 165},
+        },
+
+        // Lift FR
+        {
+            {front_right->knee, 360},
+            {front_right->ankle, 270},
+        },
+        // Turn FR
+        {
+            {front_right->hip, 315},
+        },
+        // Plant FR
+        {
+            {front_right->knee, 260},
+            {front_right->ankle, 175},
+        },
+
+        // Thrust ALL
+        {
+            {front_left->hip, 90},
+            {front_left->knee, 75},
+            {front_left->ankle, 180},
+            {front_right->hip, 270},
+            {front_right->knee, 285},
+            {front_right->ankle, 180},
+            {rear_left->hip, 135},
+            {rear_left->knee, 90},
+            {rear_left->ankle, 165},
+            {rear_right->hip, 225},
+            {rear_right->knee, 270},
+            {rear_right->ankle, 195},
+        },
+
+        // Lift RL
+        {
+            {rear_left->knee, 0},
+            {rear_left->ankle, 90},
+        },
+        // Turn RL
+        {
+            {rear_left->hip, 90},
+        },
+        // Plant RL
+        {
+            {rear_left->knee, 100},
+            {rear_left->ankle, 165},
+        },
+
+        // Lift RR
+        {
+            {rear_right->knee, 360},
+            {rear_right->ankle, 270},
+        },
+        // Turn RR
+        {
+            {rear_right->hip, 270},
+        },
+        // Plant RR
+        {
+            {rear_right->knee, 260},
+            {rear_right->ankle, 195},
+        },
+    };
+};
 
 void loop() {
-    // spider->front_left->rotateHip(90)->move();
-    // delay(500);
-    // spider->front_right->rotateHip(270)->move();
-    // delay(500);
-    // spider->rear_right->rotateHip(270)->move();
-    // delay(500);
-    // spider->rear_left->rotateHip(90)->move();
-    // delay(500);
-
-    // spider->front_left->rotateKnee(130)->move();
-    // delay(500);
-    // spider->front_right->rotateKnee(230)->move();
-    // delay(500);
-    // spider->rear_right->rotateKnee(230)->move();
-    // delay(500);
-    // spider->rear_left->rotateKnee(130)->move();
-    // delay(500);
-
-    // spider->front_left->rotateAnkle(180)->move();
-    // delay(500);
-    // spider->front_right->rotateAnkle(180)->move();
-    // delay(500);
-    // spider->rear_right->rotateAnkle(180)->move();
-    // delay(500);
-    // spider->rear_left->rotateAnkle(180)->move();
-    // delay(500);
-
-    int i = 0;
-    while (walk_forward[i][0]) {
-        for (int j = 0; walk_forward[i][j]; j++) {
+    for (int i = 0; i < walk_forward.size(); i++) {
+        int max_move_angle = 0;
+        for (int j = 0; j < walk_forward[i].size(); j++) {
             Move move = walk_forward[i][j];
-            if (move.leg_type == FRONT_LEFT) {
-                if (move.joint_type == HIP) {
-                    front_left->rotateHip(move.angle);
-                } else if (move.joint_type == KNEE) {
-                    front_left->rotateKnee(move.angle);
-                } else if (move.joint_type == ANKLE) {
-                    front_left->rotateAnkle(move.angle);
-                }
-            } else if (move.leg_type == FRONT_RIGHT) {
-                if (move.joint_type == HIP) {
-                    front_right->rotateHip(move.angle);
-                } else if (move.joint_type == KNEE) {
-                    front_right->rotateKnee(move.angle);
-                } else if (move.joint_type == ANKLE) {
-                    front_right->rotateAnkle(move.angle);
-                }
-            } else if (move.leg_type == REAR_LEFT) {
-                if (move.joint_type == HIP) {
-                    rear_left->rotateHip(move.angle);
-                } else if (move.joint_type == KNEE) {
-                    rear_left->rotateKnee(move.angle);
-                } else if (move.joint_type == ANKLE) {
-                    rear_left->rotateAnkle(move.angle);
-                }
-            } else if (move.leg_type == REAR_RIGHT) {
-                if (move.joint_type == HIP) {
-                    rear_right->rotateHip(move.angle);
-                } else if (move.joint_type == KNEE) {
-                    rear_right->rotateKnee(move.angle);
-                } else if (move.joint_type == ANKLE) {
-                    rear_right->rotateAnkle(move.angle);
-                }
+            // debug
+            Serial.printf("Joint: %d, Angle: %d\n", move.joint->get_angle(), move.angle);
+
+            if (move.joint->get_angle() > max_move_angle) {
+                max_move_angle = move.joint->get_angle();
             }
+
+            move.joint->rotate(move.angle);
         }
         spider->front_left->move();
         spider->front_right->move();
         spider->rear_left->move();
         spider->rear_right->move();
-        delay(500);
-        i++;
+        delayMicroseconds(max_move_angle * uS_PER_DEG);
     }
-}
+};
