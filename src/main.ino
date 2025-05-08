@@ -223,21 +223,6 @@ void setup() {
             {rear_right->ankle, 195},
         },
 
-        // Lift RL
-        {
-            {rear_left->knee, 30},
-            {rear_left->ankle, 110},
-        },
-        // Turn RL
-        {
-            {rear_left->hip, 135},
-        },
-        // Plant RL
-        {
-            {rear_left->knee, 90},
-            {rear_left->ankle, 165},
-        },
-
         // Lift RR
         {
             {rear_right->knee, 330},
@@ -252,6 +237,21 @@ void setup() {
             {rear_right->knee, 270},
             {rear_right->ankle, 195},
         },
+
+        // Lift RL
+        {
+            {rear_left->knee, 30},
+            {rear_left->ankle, 110},
+        },
+        // Turn RL
+        {
+            {rear_left->hip, 135},
+        },
+        // Plant RL
+        {
+            {rear_left->knee, 90},
+            {rear_left->ankle, 165},
+        },
     };
 };
 
@@ -263,8 +263,9 @@ void loop() {
             // debug
             Serial.printf("Joint: %d, Angle: %d\n", move.joint->get_angle(), move.angle);
 
-            if (move.joint->get_angle() > max_move_angle) {
-                max_move_angle = move.joint->get_angle();
+            int angle_change = abs(move.joint->get_angle() - move.angle);
+            if (angle_change > max_move_angle) {
+                max_move_angle = angle_change;
             }
 
             move.joint->rotate(move.angle);

@@ -13,6 +13,7 @@ class Joint {
         Joint(int pin, int min_angle, int max_angle, int offset, bool invert);
         // input to this function should be in global coordinate system
         int rotate(int angle);
+        int convert_angle(int angle);
         int get_angle();
         void move();
 };

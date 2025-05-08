@@ -12,6 +12,11 @@ Joint::Joint(int pin, int min_angle, int max_angle, int offset, bool invert) {
 }
 
 int Joint::rotate(int angle) {
+    this->current_angle = convert_angle(angle);
+    return current_angle;
+}
+
+int Joint::convert_angle(int angle) {
     int convertedAngle = angle;
     if (this->invert) {
         convertedAngle = -convertedAngle;
@@ -24,7 +29,6 @@ int Joint::rotate(int angle) {
         convertedAngle = max_angle;
         Serial.printf("Warning: angle %d given, max is %d\n", convertedAngle, max_angle);
     }
-    this->current_angle = convertedAngle;
     return convertedAngle;
 }
 
