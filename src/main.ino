@@ -179,77 +179,77 @@ void setup() {
     walk_forward = {
         // Lift FL
         {
-            {front_left->knee, 0},
-            {front_left->ankle, 90},
+            {front_left->knee, 30},
+            {front_left->ankle, 110},
         },
         // Turn FL
         {
-            {front_left->hip, 45},
+            {front_left->hip, 15},
         },
         // Plant FL
         {
-            {front_left->knee, 100},
+            {front_left->knee, 90},
             {front_left->ankle, 165},
         },
 
         // Lift FR
         {
-            {front_right->knee, 360},
-            {front_right->ankle, 270},
+            {front_right->knee, 330},
+            {front_right->ankle, 290},
         },
         // Turn FR
         {
-            {front_right->hip, 315},
+            {front_right->hip, 345},
         },
         // Plant FR
         {
-            {front_right->knee, 260},
-            {front_right->ankle, 175},
+            {front_right->knee, 270},
+            {front_right->ankle, 195},
         },
 
         // Thrust ALL
         {
-            {front_left->hip, 90},
+            {front_left->hip, 45},
             {front_left->knee, 75},
             {front_left->ankle, 180},
-            {front_right->hip, 270},
+            {front_right->hip, 315},
             {front_right->knee, 285},
             {front_right->ankle, 180},
-            {rear_left->hip, 135},
-            {rear_left->knee, 90},
+            {rear_left->hip, 165},
+            {rear_left->knee, 75},
             {rear_left->ankle, 165},
-            {rear_right->hip, 225},
-            {rear_right->knee, 270},
+            {rear_right->hip, 195},
+            {rear_right->knee, 285},
             {rear_right->ankle, 195},
         },
 
         // Lift RL
         {
-            {rear_left->knee, 0},
-            {rear_left->ankle, 90},
+            {rear_left->knee, 30},
+            {rear_left->ankle, 110},
         },
         // Turn RL
         {
-            {rear_left->hip, 90},
+            {rear_left->hip, 135},
         },
         // Plant RL
         {
-            {rear_left->knee, 100},
+            {rear_left->knee, 90},
             {rear_left->ankle, 165},
         },
 
         // Lift RR
         {
-            {rear_right->knee, 360},
-            {rear_right->ankle, 270},
+            {rear_right->knee, 330},
+            {rear_right->ankle, 290},
         },
         // Turn RR
         {
-            {rear_right->hip, 270},
+            {rear_right->hip, 225},
         },
         // Plant RR
         {
-            {rear_right->knee, 260},
+            {rear_right->knee, 270},
             {rear_right->ankle, 195},
         },
     };
