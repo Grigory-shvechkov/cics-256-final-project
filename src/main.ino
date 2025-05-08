@@ -263,7 +263,7 @@ void loop() {
             // debug
             Serial.printf("Joint: %d, Angle: %d\n", move.joint->get_angle(), move.angle);
 
-            int angle_change = abs(move.joint->get_angle() - move.angle);
+            int angle_change = abs(move.joint->get_angle() - move.joint->convert_angle(move.angle));
             if (angle_change > max_move_angle) {
                 max_move_angle = angle_change;
             }
