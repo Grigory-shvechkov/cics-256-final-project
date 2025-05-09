@@ -31,17 +31,26 @@ enum direction {
 direction current_direction = STOP;
 
 WebServer server(80);
+
+void sendCORSHeaders() {
+    server.sendHeader("Access-Control-Allow-Origin", "*");
+    server.sendHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    server.sendHeader("Access-Control-Allow-Headers", "Content-Type");
+};
 void on_home() {
     File file = SPIFFS.open("/web-ui/index.html", "r");
     if (!file) {
+        sendCORSHeaders();
         server.send(500, "application/json", "{\"error\":\"file not found\"}");
         return;
     }
+    sendCORSHeaders();
     server.streamFile(file, "text/html");
     file.close();
 };
 void on_move() {
     String direction = server.arg("direction");
+    sendCORSHeaders();
     if (direction == "forward") {
         current_direction = FORWARD;
     } else if (direction == "backward") {
@@ -60,6 +69,10 @@ void on_move() {
     }
     server.send(200, "application/json", "{\"status\":\"ok\"}");
 };
+void on_options() {
+    sendCORSHeaders();
+    server.send(200, "application/json", "{\"status\":\"ok\"}");
+};
 
 void setup() {
     Serial.begin(115200);
@@ -71,8 +84,9 @@ void setup() {
 
     WiFi.mode(WIFI_AP);
     WiFi.softAP("Spider");
-    server.on("/", on_home);
-    server.on("/move", on_move);
+    server.on("/", HTTP_GET, on_home);
+    server.on("/move", HTTP_GET, on_move);
+    server.on("/move", HTTP_OPTIONS, on_options);
     server.begin();
 
     front_left = new Leg(
