@@ -13,6 +13,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^4.0.0",
+		"@sveltejs/adapter-static": "^3.0.8",
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"autoprefixer": "^10.4.21",
@@ -29,7 +30,7 @@
 		"vite": "^6.2.5"
 	},
 	"dependencies": {
-		"@lucide/svelte": "^0.503.0",
+		"@lucide/svelte": "^0.509.0",
 		"mode-watcher": "^0.5.1"
 	}
 }
