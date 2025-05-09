@@ -53,25 +53,25 @@
 </script>
 
 <div class="min-h-screen flex items-center justify-center p-8">
-    <div class="flex flex-col items-center justify-center gap-16 bg-zinc-900 border-4 rounded-xl p-8">
+    <div class="flex flex-col items-center justify-center gap-16 bg-zinc-900 border-4 rounded-xl drop-shadow-[8px_8px_0_black] p-8">
         <h1 class="text-center text-3xl font-bold tracking-tight">QUADRUPED ROBOT CONTROL</h1>
         <div class="grid grid-cols-3 grid-rows-3 items-center justify-items-center gap-4">
             <div></div>
-            <Button onclick={handleForwardClick} class="size-20 border-4 rounded-xl" variant="outline">
+            <Button onclick={handleForwardClick} class="size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]" variant="outline">
                 <ChevronUp />
             </Button>
             <div></div>
-            <Button onclick={handleLeftClick} class="size-20 border-4 rounded-xl" variant="outline">
+            <Button onclick={handleLeftClick} class="size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]" variant="outline">
                 <RotateCCW />
             </Button>
-            <Button onclick={handleStopClick} class="size-20 border-4 rounded-xl" variant="destructive">
+            <Button onclick={handleStopClick} class="size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]" variant="destructive">
                 <Ban />
             </Button>
-            <Button onclick={handleRightClick} class="size-20 border-4 rounded-xl" variant="outline">
+            <Button onclick={handleRightClick} class="size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]" variant="outline">
                 <RotateCW />
             </Button>
             <div></div>
-            <Button onclick={handleBackwardClick} class="size-20 border-4 rounded-xl" variant="outline">
+            <Button onclick={handleBackwardClick} class="size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]" variant="outline">
                 <ChevronDown />
             </Button>
             <div></div>
