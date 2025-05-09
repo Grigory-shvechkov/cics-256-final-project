@@ -38,7 +38,7 @@ void sendCORSHeaders() {
     server.sendHeader("Access-Control-Allow-Headers", "Content-Type");
 };
 void on_home() {
-    File file = SPIFFS.open("/web-ui/index.html", "r");
+    File file = SPIFFS.open("./web-ui/index.html", "r");
     if (!file) {
         sendCORSHeaders();
         server.send(500, "application/json", "{\"error\":\"file not found\"}");
