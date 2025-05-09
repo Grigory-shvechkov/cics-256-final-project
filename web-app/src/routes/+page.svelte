@@ -6,7 +6,10 @@
     import RotateCW from "@lucide/svelte/icons/rotate-cw";
     import Ban from "@lucide/svelte/icons/ban";
 
+    let currentDirection = $state("stop");
+
     async function handleForwardClick() {
+        currentDirection = "forward";
         await fetch("http://192.168.4.1/move?direction=forward", {
             method: "GET",
             headers: {
@@ -16,6 +19,7 @@
     };
 
     async function handleBackwardClick() {
+        currentDirection = "backward";
         await fetch("http://192.168.4.1/move?direction=backward", {
             method: "GET",
             headers: {
@@ -25,6 +29,7 @@
     };
 
     async function handleLeftClick() {
+        currentDirection = "left";
         await fetch("http://192.168.4.1/move?direction=left", {
             method: "GET",
             headers: {
@@ -34,6 +39,7 @@
     };
 
     async function handleRightClick() {
+        currentDirection = "right";
         await fetch("http://192.168.4.1/move?direction=right", {
             method: "GET",
             headers: {
@@ -43,6 +49,7 @@
     };
 
     async function handleStopClick() {
+        currentDirection = "stop";
         await fetch("http://192.168.4.1/move?direction=stop", {
             method: "GET",
             headers: {
@@ -57,22 +64,22 @@
         <h1 class="text-center text-3xl font-bold tracking-tight">QUADRUPED ROBOT CONTROL</h1>
         <div class="grid grid-cols-3 grid-rows-3 items-center justify-items-center gap-4">
             <div></div>
-            <Button onclick={handleForwardClick} class="size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]" variant="outline">
-                <ChevronUp />
+            <Button onclick={handleForwardClick} class={["size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]", currentDirection === "forward" ? "border-orange-700" : ""]} variant="outline">
+                <ChevronUp class="!size-6 stroke-orange-500" />
             </Button>
             <div></div>
-            <Button onclick={handleLeftClick} class="size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]" variant="outline">
-                <RotateCCW />
+            <Button onclick={handleLeftClick} class={["size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]", currentDirection === "left" ? "border-orange-700" : ""]} variant="outline">
+                <RotateCCW class="!size-6 stroke-orange-500" />
             </Button>
-            <Button onclick={handleStopClick} class="size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]" variant="destructive">
-                <Ban />
+            <Button onclick={handleStopClick} class={["size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]", currentDirection === "stop" ? "border-orange-700" : ""]} variant="outline">
+                <Ban class="!size-6 stroke-orange-500" />
             </Button>
-            <Button onclick={handleRightClick} class="size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]" variant="outline">
-                <RotateCW />
+            <Button onclick={handleRightClick} class={["size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]", currentDirection === "right" ? "border-orange-700" : ""]} variant="outline">
+                <RotateCW class="!size-6 stroke-orange-500" />
             </Button>
             <div></div>
-            <Button onclick={handleBackwardClick} class="size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]" variant="outline">
-                <ChevronDown />
+            <Button onclick={handleBackwardClick} class={["size-20 border-4 rounded-xl drop-shadow-[8px_8px_0_black]", currentDirection === "backward" ? "border-orange-700" : ""]} variant="outline">
+                <ChevronDown class="!size-6 stroke-orange-500" />
             </Button>
             <div></div>
         </div>
