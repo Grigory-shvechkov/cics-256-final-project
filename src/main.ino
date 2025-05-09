@@ -15,9 +15,13 @@ std::vector<std::vector<Move>> homunculus_walk;
 std::vector<std::vector<Move>> scoot_forward;
 std::vector<std::vector<Move>> walk_forward;
 std::vector<std::vector<Move>> walk_backward;
+std::vector<std::vector<Move>> rotate_left;
+std::vector<std::vector<Move>> rotate_right;
 
 bool is_moving_forward = false;
 bool is_moving_backward = false;
+bool is_moving_left = false;
+bool is_moving_right = false;
 
 WebServer server(80);
 void on_home() {
@@ -41,6 +45,24 @@ void on_backward() {
         server.send(200, "application/json", "{\"status\":\"ok\"}");
     }
 };
+void on_rotate_left() {
+    if (server.hasArg("stop")) {
+        is_moving_left = false;
+        server.send(200, "application/json", "{\"status\":\"ok\"}");
+    } else {
+        is_moving_left = true;
+        server.send(200, "application/json", "{\"status\":\"ok\"}");
+    }
+};
+void on_rotate_right() {
+    if (server.hasArg("stop")) {
+        is_moving_right = false;
+        server.send(200, "application/json", "{\"status\":\"ok\"}");
+    } else {
+        is_moving_right = true;
+        server.send(200, "application/json", "{\"status\":\"ok\"}");
+    }
+};
 
 void setup() {
     Serial.begin(115200);
@@ -50,6 +72,8 @@ void setup() {
     server.on("/", on_home);
     server.on("/move/forward", on_forward);
     server.on("/move/backward", on_backward);
+    server.on("/move/rotate-left", on_rotate_left);
+    server.on("/move/rotate-right", on_rotate_right);
     server.begin();
 
     front_left = new Leg(
@@ -347,6 +371,106 @@ void setup() {
         },
     };
 
+    rotate_left = {
+        // lift front left and swing counter clockwise
+        {
+            {front_left->knee, 45}
+        },
+        {
+            {front_left->hip, 90}
+        },
+        {
+            {front_left->knee, 90},
+        },
+        // lift rear right and swing counter clockwise
+        {
+            {rear_right->knee, 315}
+        },
+        {
+            {rear_right->hip, 360}
+        },
+        {
+            {rear_right->knee, 270}
+        },
+        // lift rear left and swing counter clockwise
+        {
+            {rear_left->knee, 45}
+        },
+        {
+            {rear_left->hip, 180}
+        },
+        {
+            {rear_left->knee, 90}
+        },
+        // lift front right and swing counter clockwise
+        {
+            {front_right->knee, 315}
+        },
+        {
+            {front_right->hip, 360}
+        },
+        {
+            {front_right->knee, 270}
+        },
+        // thrust counter clockwise
+        {
+            {front_left->hip, 45},
+            {front_right->hip, 315},
+            {rear_left->hip, 135},
+            {rear_right->hip, 225}
+        },
+    };
+
+    rotate_right = {
+        // lift front left and swing clockwise
+        {
+            {front_left->knee, 45}
+        },
+        {
+            {front_left->hip, 0}
+        },
+        {
+            {front_left->knee, 90},
+        },
+        // lift rear right and swing clockwise
+        {
+            {rear_right->knee, 315}
+        },
+        {
+            {rear_right->hip, 180}
+        },
+        {
+            {rear_right->knee, 270}
+        },
+        // lift rear left and swing clockwise
+        {
+            {rear_left->knee, 45}
+        },
+        {
+            {rear_left->hip, 90}
+        },
+        {
+            {rear_left->knee, 90}
+        },
+        // lift front right and swing clockwise
+        {
+            {front_right->knee, 315}
+        },
+        {
+            {front_right->hip, 270}
+        },
+        {
+            {front_right->knee, 270}
+        },
+        // thrust clockwise
+        {
+            {front_left->hip, 45},
+            {front_right->hip, 315},
+            {rear_left->hip, 135},
+            {rear_right->hip, 225}
+        },
+    };
+
     // lock ankles on startup
     spider->front_left->ankle->rotate(180);
     spider->front_right->ankle->rotate(180);
@@ -355,33 +479,13 @@ void setup() {
     spider->move();
 };
 
-void run_walk_forward() {
-    for (int i = 0; i < walk_forward.size(); i++) {
+void run_cycle(std::vector<std::vector<Move>> moves) {
+    for (int i = 0; i < moves.size(); i++) {
         int max_move_angle = 0;
-        for (int j = 0; j < walk_forward[i].size(); j++) {
-            Move move = walk_forward[i][j];
+        for (int j = 0; j < moves[i].size(); j++) {
+            Move move = moves[i][j];
             // debug
-            Serial.printf("Joint: %d, Angle: %d\n", move.joint->get_angle(), move.angle);
-
-            int angle_change = abs(move.joint->get_angle() - move.joint->convert_angle(move.angle));
-            if (angle_change > max_move_angle) {
-                max_move_angle = angle_change;
-            }
-
-            move.joint->rotate(move.angle);
-        }
-        spider->move();
-        delayMicroseconds(max_move_angle * uS_PER_DEG);
-    }
-};
-
-void run_walk_backward() {
-    for (int i = 0; i < walk_backward.size(); i++) {
-        int max_move_angle = 0;
-        for (int j = 0; j < walk_backward[i].size(); j++) {
-            Move move = walk_backward[i][j];
-            // debug
-            Serial.printf("Joint: %d, Angle: %d\n", move.joint->get_angle(), move.angle);
+            // Serial.printf("Joint: %d, Angle: %d\n", move.joint->get_angle(), move.angle);
 
             int angle_change = abs(move.joint->get_angle() - move.joint->convert_angle(move.angle));
             if (angle_change > max_move_angle) {
@@ -398,9 +502,15 @@ void run_walk_backward() {
 void loop() {
     server.handleClient();
     if (is_moving_forward) {
-        run_walk_forward();
+        run_cycle(walk_forward);
     }
     if (is_moving_backward) {
-        run_walk_backward();
+        run_cycle(walk_backward);
+    }
+    if (is_moving_left) {
+        run_cycle(rotate_left);
+    }
+    if (is_moving_right) {
+        run_cycle(rotate_right);
     }
 };
