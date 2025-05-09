@@ -472,10 +472,25 @@ void setup() {
     };
 
     // lock ankles on startup
-    spider->front_left->ankle->rotate(180);
-    spider->front_right->ankle->rotate(180);
-    spider->rear_left->ankle->rotate(180);
-    spider->rear_right->ankle->rotate(180);
+    front_left->ankle->rotate(180);
+    front_right->ankle->rotate(180);
+    rear_left->ankle->rotate(180);
+    rear_right->ankle->rotate(180);
+    // move knees
+    front_left->knee->rotate(45);
+    front_right->knee->rotate(315);
+    rear_left->knee->rotate(45);
+    rear_right->knee->rotate(315);
+    // move hips
+    front_left->hip->rotate(45);
+    front_right->hip->rotate(315);
+    rear_left->hip->rotate(135);
+    rear_right->hip->rotate(225);
+    // plant feet
+    front_left->knee->rotate(90);
+    front_right->knee->rotate(270);
+    rear_left->knee->rotate(90);
+    rear_right->knee->rotate(270);
     spider->move();
 };
 
