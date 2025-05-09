@@ -494,9 +494,9 @@ void run_cycle(std::vector<std::vector<Move>> moves) {
 void loop() {
     server.handleClient();
     if (current_direction == FORWARD) {
-        run_cycle(homunculus_walk);
+        run_cycle(walk_forward);
     } else if (current_direction == BACKWARD) {
-        run_cycle(homunculus_walk);
+        run_cycle(walk_backward);
     } else if (current_direction == LEFT) {
         run_cycle(rotate_left);
     } else if (current_direction == RIGHT) {
