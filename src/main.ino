@@ -14,51 +14,32 @@ Leg *front_left, *front_right, *rear_left, *rear_right;
 std::vector<std::vector<Move>> homunculus_walk;
 std::vector<std::vector<Move>> scoot_forward;
 std::vector<std::vector<Move>> walk_forward;
+std::vector<std::vector<Move>> walk_backward;
+
+bool is_moving_forward = false;
+bool is_moving_backward = false;
 
 WebServer server(80);
 void on_home() {
     server.send(200, "application/json", "{\"status\":\"ok\"}");
 };
-void on_rotate() {
-    // if (server.hasArg("leg") && server.hasArg("joint") && server.hasArg("angle")) {
-    //     if (server.arg("leg") == "fl") {
-    //         if (server.arg("joint") == "hip") {
-    //             front_left->rotateHip(server.arg("angle").toInt());
-    //         } else if (server.arg("joint") == "knee") {
-    //             front_left->rotateKnee(server.arg("angle").toInt());
-    //         } else if (server.arg("joint") == "ankle") {
-    //             front_left->rotateAnkle(server.arg("angle").toInt());
-    //         }
-    //         front_left->move();
-    //     } else if (server.arg("leg") == "fr") {
-    //         if (server.arg("joint") == "hip") {
-    //             front_right->rotateHip(server.arg("angle").toInt());
-    //         } else if (server.arg("joint") == "knee") {
-    //             front_right->rotateKnee(server.arg("angle").toInt());
-    //         } else if (server.arg("joint") == "ankle") {
-    //             front_right->rotateAnkle(server.arg("angle").toInt());
-    //         }
-    //         front_right->move();
-    //     } else if (server.arg("leg") == "rl") {
-    //         if (server.arg("joint") == "hip") {
-    //             rear_left->rotateHip(server.arg("angle").toInt());
-    //         } else if (server.arg("joint") == "knee") {
-    //             rear_left->rotateKnee(server.arg("angle").toInt());
-    //         } else if (server.arg("joint") == "ankle") {
-    //             rear_left->rotateAnkle(server.arg("angle").toInt());
-    //         }
-    //         rear_left->move();
-    //     } else if (server.arg("leg") == "rr") {
-    //         if (server.arg("joint") == "hip") {
-    //             rear_right->rotateHip(server.arg("angle").toInt());
-    //         } else if (server.arg("joint") == "knee") {
-    //             rear_right->rotateKnee(server.arg("angle").toInt());
-    //         } else if (server.arg("joint") == "ankle") {
-    //             rear_right->rotateAnkle(server.arg("angle").toInt());
-    //         }
-    //         rear_right->move();
-    //     }
-    // }
+void on_forward() {
+    if (server.hasArg("stop")) {
+        is_moving_forward = false;
+        server.send(200, "application/json", "{\"status\":\"ok\"}");
+    } else {
+        is_moving_forward = true;
+        server.send(200, "application/json", "{\"status\":\"ok\"}");
+    }
+};
+void on_backward() {
+    if (server.hasArg("stop")) {
+        is_moving_backward = false;
+        server.send(200, "application/json", "{\"status\":\"ok\"}");
+    } else {
+        is_moving_backward = true;
+        server.send(200, "application/json", "{\"status\":\"ok\"}");
+    }
 };
 
 void setup() {
@@ -67,7 +48,8 @@ void setup() {
     WiFi.mode(WIFI_AP);
     WiFi.softAP("Spider");
     server.on("/", on_home);
-    server.on("/rotate", on_rotate);
+    server.on("/move/forward", on_forward);
+    server.on("/move/backward", on_backward);
     server.begin();
 
     front_left = new Leg(
@@ -258,7 +240,7 @@ void setup() {
     walk_forward = {
         // lift knee and move hip forward and plant
         {
-            {front_left->knee, 65},
+            {front_left->knee, 45},
         },
         {
             {front_left->hip, 45},
@@ -301,13 +283,67 @@ void setup() {
         },
         // lift rear left and plant
         {
-            {rear_left->knee, 65},
+            {rear_left->knee, 45},
         },
         {
             {rear_left->hip, 90},
         },
         {
             {rear_left->knee, 90},
+        },
+    };
+
+    walk_backward = {
+        {
+            {rear_right->knee, 315},
+        },
+        {
+            {rear_right->hip, 225},
+        },
+        {
+            {rear_right->knee, 270},
+        },
+
+        {
+            {rear_left->hip, 90},
+            {front_right->hip, 315},
+        },
+
+        {
+            {front_left->knee, 45},
+        },
+        {
+            {front_left->hip, 90},
+        },
+        {
+            {front_left->knee, 90},
+        },
+
+        // second part
+
+        {
+            {rear_left->knee, 65},
+        },
+        {
+            {rear_left->hip, 135},
+        },
+        {
+            {rear_left->knee, 90},
+        },
+
+        {
+            {rear_right->hip, 270},
+            {front_left->hip, 45},
+        },
+
+        {
+            {front_right->knee, 315},
+        },
+        {
+            {front_right->hip, 270},
+        },
+        {
+            {front_right->knee, 270},
         },
     };
 
@@ -319,7 +355,7 @@ void setup() {
     spider->move();
 };
 
-void loop() {
+void run_walk_forward() {
     for (int i = 0; i < walk_forward.size(); i++) {
         int max_move_angle = 0;
         for (int j = 0; j < walk_forward[i].size(); j++) {
@@ -336,5 +372,35 @@ void loop() {
         }
         spider->move();
         delayMicroseconds(max_move_angle * uS_PER_DEG);
+    }
+};
+
+void run_walk_backward() {
+    for (int i = 0; i < walk_backward.size(); i++) {
+        int max_move_angle = 0;
+        for (int j = 0; j < walk_backward[i].size(); j++) {
+            Move move = walk_backward[i][j];
+            // debug
+            Serial.printf("Joint: %d, Angle: %d\n", move.joint->get_angle(), move.angle);
+
+            int angle_change = abs(move.joint->get_angle() - move.joint->convert_angle(move.angle));
+            if (angle_change > max_move_angle) {
+                max_move_angle = angle_change;
+            }
+
+            move.joint->rotate(move.angle);
+        }
+        spider->move();
+        delayMicroseconds(max_move_angle * uS_PER_DEG);
+    }
+};
+
+void loop() {
+    server.handleClient();
+    if (is_moving_forward) {
+        run_walk_forward();
+    }
+    if (is_moving_backward) {
+        run_walk_backward();
     }
 };
