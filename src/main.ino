@@ -12,6 +12,7 @@ Spider *spider;
 Leg *front_left, *front_right, *rear_left, *rear_right;
 
 std::vector<std::vector<Move>> homunculus_walk;
+std::vector<std::vector<Move>> scoot_forward;
 std::vector<std::vector<Move>> walk_forward;
 
 WebServer server(80);
@@ -176,7 +177,7 @@ void setup() {
         },
     };
 
-    walk_forward = {
+    scoot_forward = {
         // Lift FL
         {
             {front_left->knee, 30},
@@ -253,6 +254,69 @@ void setup() {
             {rear_left->ankle, 165},
         },
     };
+
+    walk_forward = {
+        // lift knee and move hip forward and plant
+        {
+            {front_left->knee, 65},
+        },
+        {
+            {front_left->hip, 45},
+        },
+        {
+            {front_left->knee, 90},
+        },
+        // slide right front leg back and move left rear backwards
+        {
+            {front_right->hip, 270},
+            {rear_left->hip, 135},
+        },
+        // move right rear forward
+        {
+            {rear_right->knee, 315},
+        },
+        {
+            {rear_right->hip, 270},
+        },
+        {
+            {rear_right->knee, 270},
+        },
+
+        // SECOND PART OF CYCLE
+
+        // move front right forward and plant
+        {
+            {front_right->knee, 315},
+        },
+        {
+            {front_right->hip, 315},
+        },
+        {
+            {front_right->knee, 270},
+        },
+        // move front left back and move right rear back
+        {
+            {front_left->hip, 90},
+            {rear_right->hip, 225},
+        },
+        // lift rear left and plant
+        {
+            {rear_left->knee, 65},
+        },
+        {
+            {rear_left->hip, 90},
+        },
+        {
+            {rear_left->knee, 90},
+        },
+    };
+
+    // lock ankles on startup
+    spider->front_left->ankle->rotate(180);
+    spider->front_right->ankle->rotate(180);
+    spider->rear_left->ankle->rotate(180);
+    spider->rear_right->ankle->rotate(180);
+    spider->move();
 };
 
 void loop() {
@@ -270,10 +334,7 @@ void loop() {
 
             move.joint->rotate(move.angle);
         }
-        spider->front_left->move();
-        spider->front_right->move();
-        spider->rear_left->move();
-        spider->rear_right->move();
+        spider->move();
         delayMicroseconds(max_move_angle * uS_PER_DEG);
     }
 };

@@ -60,3 +60,10 @@ Spider::Spider(Leg *fl, Leg *fr, Leg *rl, Leg *rr) {
     this->rear_left = rl;
     this->rear_right = rr;
 }
+
+void Spider::move() {
+    this->front_left->move();
+    this->front_right->move();
+    this->rear_left->move();
+    this->rear_right->move();
+}

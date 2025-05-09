@@ -34,6 +34,7 @@ class Spider {
         Leg *rear_left;
         Leg *rear_right;
         Spider(Leg *fl, Leg *fr, Leg *rl, Leg *rr);
+        void move();
 };
 
 struct Move {
