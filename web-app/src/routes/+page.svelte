@@ -1,20 +1,13 @@
 <script lang="ts">
     import { Button } from "$lib/components/ui/button";
     import ChevronUp from "@lucide/svelte/icons/chevron-up";
+    import ChevronDown from "@lucide/svelte/icons/chevron-down";
+    import RotateCCW from "@lucide/svelte/icons/rotate-ccw";
+    import RotateCW from "@lucide/svelte/icons/rotate-cw";
+    import Ban from "@lucide/svelte/icons/ban";
 
     async function handleForwardClick() {
-        console.log("here");
-        const response = await fetch("http://192.168.4.1/move/forward", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-    };
-
-    async function handleForwardStopClick() {
-        console.log("here");
-        const response = await fetch("http://192.168.4.1/move/forward?stop=true", {
+        await fetch("http://192.168.4.1/move?direction=forward", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -23,18 +16,7 @@
     };
 
     async function handleBackwardClick() {
-        console.log("here");
-        const response = await fetch("http://192.168.4.1/move/backward", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-    };
-
-    async function handleBackwardStopClick() {
-        console.log("here");
-        const response = await fetch("http://192.168.4.1/move/backward?stop=true", {
+        await fetch("http://192.168.4.1/move?direction=backward", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -43,18 +25,7 @@
     };
 
     async function handleLeftClick() {
-        console.log("here");
-        const response = await fetch("http://192.168.4.1/move/rotate-left", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-    };
-
-    async function handleLeftStopClick() {
-        console.log("here");
-        const response = await fetch("http://192.168.4.1/move/rotate-left?stop=true", {
+        await fetch("http://192.168.4.1/move?direction=left", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -63,8 +34,7 @@
     };
 
     async function handleRightClick() {
-        console.log("here");
-        const response = await fetch("http://192.168.4.1/move/rotate-right", {
+        await fetch("http://192.168.4.1/move?direction=right", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -72,9 +42,8 @@
         });
     };
 
-    async function handleRightStopClick() {
-        console.log("here");
-        const response = await fetch("http://192.168.4.1/move/rotate-right?stop=true", {
+    async function handleStopClick() {
+        await fetch("http://192.168.4.1/move?direction=stop", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -83,36 +52,27 @@
     };
 </script>
 
-<div class="flex flex-col items-center gap-8 p-8">
-    <h1 class="text-center text-4xl font-semibold">Robot Spider Control</h1>
-    <div class="flex flex-col">
-        <Button onclick={handleForwardClick}>
+<div class="min-h-screen flex flex-col items-center justify-center gap-8 p-8">
+    <h1 class="text-center text-4xl font-semibold">Quadruped Robot Control</h1>
+    <div class="grid grid-cols-3 grid-rows-3 items-center justify-items-center gap-4">
+        <div></div>
+        <Button onclick={handleForwardClick} class="size-16">
             <ChevronUp />
         </Button>
-        <Button onclick={handleForwardStopClick}>
-            STOP FORWARD
+        <div></div>
+        <Button onclick={handleLeftClick} class="size-16">
+            <RotateCCW />
         </Button>
-        <Button onclick={handleBackwardClick}>
-            <ChevronUp class="rotate-180" />
+        <Button onclick={handleStopClick} class="size-16">
+            <Ban />
         </Button>
-        <Button onclick={handleBackwardStopClick}>
-            STOP BACKWARD
+        <Button onclick={handleRightClick} class="size-16">
+            <RotateCW />
         </Button>
-        <div class="flex gap-4">
-            <Button onclick={handleLeftClick}>
-                LEFT
-            </Button>
-            <Button onclick={handleRightClick}>
-                RIGHT
-            </Button>
-        </div>
-        <div class="flex gap-4">
-            <Button onclick={handleLeftStopClick}>
-                STOP LEFT
-            </Button>
-            <Button onclick={handleRightStopClick}>
-                STOP RIGHT
-            </Button>
-        </div>
+        <div></div>
+        <Button onclick={handleBackwardClick} class="size-16">
+            <ChevronDown />
+        </Button>
+        <div></div>
     </div>
 </div>
