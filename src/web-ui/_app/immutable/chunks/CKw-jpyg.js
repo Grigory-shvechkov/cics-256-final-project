@@ -1,0 +1,1 @@
+import{r as a,H as _,a as d,s,c as i,n as o,v as f,w as c,d as r,g as u}from"./CGd4AWAx.js";let e;function g(){e=void 0}function p(h){let n=null,l=a;var t;if(a){for(n=r,e===void 0&&(e=u(document.head));e!==null&&(e.nodeType!==8||e.data!==_);)e=d(e);e===null?s(!1):e=i(d(e))}a||(t=document.head.appendChild(o()));try{f(()=>h(t),c)}finally{l&&(s(!0),e=r,i(n))}}export{p as h,g as r};
