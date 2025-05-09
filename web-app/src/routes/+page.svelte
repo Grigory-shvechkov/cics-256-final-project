@@ -52,27 +52,29 @@
     };
 </script>
 
-<div class="min-h-screen flex flex-col items-center justify-center gap-8 p-8">
-    <h1 class="text-center text-4xl font-semibold">Quadruped Robot Control</h1>
-    <div class="grid grid-cols-3 grid-rows-3 items-center justify-items-center gap-4">
-        <div></div>
-        <Button onclick={handleForwardClick} class="size-16">
-            <ChevronUp />
-        </Button>
-        <div></div>
-        <Button onclick={handleLeftClick} class="size-16">
-            <RotateCCW />
-        </Button>
-        <Button onclick={handleStopClick} class="size-16">
-            <Ban />
-        </Button>
-        <Button onclick={handleRightClick} class="size-16">
-            <RotateCW />
-        </Button>
-        <div></div>
-        <Button onclick={handleBackwardClick} class="size-16">
-            <ChevronDown />
-        </Button>
-        <div></div>
+<div class="min-h-screen flex items-center justify-center p-8">
+    <div class="flex flex-col items-center justify-center gap-16 bg-zinc-900 border-4 rounded-xl p-8">
+        <h1 class="text-center text-3xl font-bold tracking-tight">QUADRUPED ROBOT CONTROL</h1>
+        <div class="grid grid-cols-3 grid-rows-3 items-center justify-items-center gap-4">
+            <div></div>
+            <Button onclick={handleForwardClick} class="size-20 border-4 rounded-xl" variant="outline">
+                <ChevronUp />
+            </Button>
+            <div></div>
+            <Button onclick={handleLeftClick} class="size-20 border-4 rounded-xl" variant="outline">
+                <RotateCCW />
+            </Button>
+            <Button onclick={handleStopClick} class="size-20 border-4 rounded-xl" variant="destructive">
+                <Ban />
+            </Button>
+            <Button onclick={handleRightClick} class="size-20 border-4 rounded-xl" variant="outline">
+                <RotateCW />
+            </Button>
+            <div></div>
+            <Button onclick={handleBackwardClick} class="size-20 border-4 rounded-xl" variant="outline">
+                <ChevronDown />
+            </Button>
+            <div></div>
+        </div>
     </div>
 </div>
