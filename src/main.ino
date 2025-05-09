@@ -5,6 +5,7 @@
 #include "limits.h"
 #include "legs.h"
 #include <vector>
+#include <SPIFFS.h>
 
 #define uS_PER_DEG 1389
 
@@ -24,13 +25,20 @@ enum direction {
     LEFT,
     RIGHT,
     STOP,
+    START,
 };
 
 direction current_direction = STOP;
 
 WebServer server(80);
 void on_home() {
-    server.send(200, "application/json", "{\"status\":\"ok\"}");
+    File file = SPIFFS.open("/web-ui/index.html", "r");
+    if (!file) {
+        server.send(500, "application/json", "{\"error\":\"file not found\"}");
+        return;
+    }
+    server.streamFile(file, "text/html");
+    file.close();
 };
 void on_move() {
     String direction = server.arg("direction");
@@ -44,15 +52,22 @@ void on_move() {
         current_direction = RIGHT;
     } else if (direction == "stop") {
         current_direction = STOP;
+    } else if (direction == "start") {
+        current_direction = START;
     } else {
         server.send(400, "application/json", "{\"error\":\"invalid direction\"}");
         return;
     }
     server.send(200, "application/json", "{\"status\":\"ok\"}");
-}
+};
 
 void setup() {
     Serial.begin(115200);
+
+    if (!SPIFFS.begin(true)) {
+        Serial.println("SPIFFS mount failed");
+        return;
+    }
 
     WiFi.mode(WIFI_AP);
     WiFi.softAP("Spider");
@@ -454,28 +469,6 @@ void setup() {
             {rear_right->hip, 225}
         },
     };
-
-    // lock ankles on startup
-    front_left->ankle->rotate(180);
-    front_right->ankle->rotate(180);
-    rear_left->ankle->rotate(180);
-    rear_right->ankle->rotate(180);
-    // move knees
-    front_left->knee->rotate(45);
-    front_right->knee->rotate(315);
-    rear_left->knee->rotate(45);
-    rear_right->knee->rotate(315);
-    // move hips
-    front_left->hip->rotate(45);
-    front_right->hip->rotate(315);
-    rear_left->hip->rotate(135);
-    rear_right->hip->rotate(225);
-    // plant feet
-    front_left->knee->rotate(90);
-    front_right->knee->rotate(270);
-    rear_left->knee->rotate(90);
-    rear_right->knee->rotate(270);
-    spider->move();
 };
 
 void run_cycle(std::vector<std::vector<Move>> moves) {
@@ -508,5 +501,28 @@ void loop() {
         run_cycle(rotate_left);
     } else if (current_direction == RIGHT) {
         run_cycle(rotate_right);
+    } else if (current_direction == START) {
+        // lock ankles on startup
+        front_left->ankle->rotate(180);
+        front_right->ankle->rotate(180);
+        rear_left->ankle->rotate(180);
+        rear_right->ankle->rotate(180);
+        // move knees
+        front_left->knee->rotate(45);
+        front_right->knee->rotate(315);
+        rear_left->knee->rotate(45);
+        rear_right->knee->rotate(315);
+        // move hips
+        front_left->hip->rotate(45);
+        front_right->hip->rotate(315);
+        rear_left->hip->rotate(135);
+        rear_right->hip->rotate(225);
+        // plant feet
+        front_left->knee->rotate(90);
+        front_right->knee->rotate(270);
+        rear_left->knee->rotate(90);
+        rear_right->knee->rotate(270);
+        spider->move();
+        current_direction = STOP;
     }
 };
