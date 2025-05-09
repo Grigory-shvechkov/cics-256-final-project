@@ -14,6 +14,9 @@ const config = {
 		adapter: adapter({
 			pages: "../src/web-ui",
 		}),
+		output: {
+			bundleStrategy: "inline",
+		},
 	},
 };
 
