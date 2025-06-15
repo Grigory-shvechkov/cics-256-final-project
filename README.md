@@ -22,7 +22,7 @@ This robot is a four-legged spider-like walker designed for remote control throu
 - **SG90 Micro Servos** (3 per leg × 4 legs = 12 servos)
 - **Custom PCB** for servo distribution and control
 - **Web Server Interface** hosted on the robot (ESPAsyncWebServer)
-- **3D Printed Chassis** (Designed in Fusion 360 / Tinkercad)
+- **3D Printed Chassis** (Designed in Fusion 360/ Printed on Prusa 4)
 
 ---
 
