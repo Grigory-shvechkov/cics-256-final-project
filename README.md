@@ -60,5 +60,15 @@ This robot is a four-legged spider-like walker designed for remote control throu
 
 ---
 
-## 📁 Repository Structure
+### 🧭 Custom Kinematics Diagram
+
+We designed a custom control diagram to convert **local servo angles** into **global, human-readable angles**. This abstraction simplified the programming of leg movement and gait coordination, allowing us to control the quadruped in an intuitive and modular way.
+
+![Kinematics Diagram](motor-diagram.png)
+
+This system made it easier to:
+- Visualize leg orientation in 3D space
+- Translate desired poses into servo commands
+- Create and tweak gaits like crawl, trot, and pivot with minimal code changes
+
 
